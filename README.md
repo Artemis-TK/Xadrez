@@ -4,7 +4,7 @@ Instalation/Usage:
 ```bash
 cd $HOME
 git clone https://github.com/Artemis-TK/Xadrez.git
-cd Xadrez-Poo
+cd Xadrez
 dotnet run
 ```
 
