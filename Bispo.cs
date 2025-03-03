@@ -32,7 +32,7 @@ public class Bispo : Pecas
         
         try
         {
-            string path = Path.Combine($@"{disk}:\Users\", Environment.UserName, "Xadrez-Poo", "bin", "Debug", "imagens", $"bispo_{cor}.png"); // Se estiver dando erro, edite o valor da variável 'disk' para "D"
+            string path = Path.Combine($@"{disk}:\Users\", Environment.UserName, "Xadrez", "bin", "Debug", "imagens", $"bispo_{cor}.png"); // Se estiver dando erro, edite o valor da variável 'disk' para "D"
             // MessageBox.Show("Tentando carregar: " + path);
             pictureBox.Image = Image.FromFile(path);
         }
