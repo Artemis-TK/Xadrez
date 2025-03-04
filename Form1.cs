@@ -193,8 +193,6 @@ public partial class Form1 : Form
                 this.Controls.SetChildIndex(novaCasaVazia.pictureBox,0);
                 pecaOrigem.pictureBox.BringToFront();
                 this.Controls.SetChildIndex(pecaOrigem.pictureBox, 0);
-
-                MessageBox.Show($"{pecaOrigem.GetType()}");
             }
 
             // Atualiza a interface
