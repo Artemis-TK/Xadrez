@@ -54,12 +54,14 @@ public partial class Form1 : Form
                 return;
             }
 
-            if ((peca.cor == "preto" || peca.cor == "preta") && vez_das_brancas){
+            if ((peca.cor == "preto" || peca.cor == "preta") && vez_das_brancas)
+            {
                 MessageBox.Show($"Vez das brancas");
                 origemX = -1;
                 origemY = -1;
                 return;
-            }else if ((peca.cor == "branco" || peca.cor == "branca") && !vez_das_brancas)
+            }
+            else if ((peca.cor == "branco" || peca.cor == "branca") && !vez_das_brancas)
             {
                 MessageBox.Show($"Vez das pretas");
                 origemX = -1;
@@ -75,10 +77,10 @@ public partial class Form1 : Form
 
             Pecas pecaOrigem = tabuleiro[origemX, origemY];
             Pecas pecaDestino = tabuleiro[peca.linha, peca.coluna];
-            
+
             MessageBox.Show($"Peça destino: {pecaDestino.GetType().ToString()}");
 
-            
+
 
             // MessageBox.Show(peca.GetType().ToString());
 
@@ -165,22 +167,34 @@ public partial class Form1 : Form
                     origemY = -1;
                     return;
                 }
+
+                CasaVazia novaCasaVazia = CriarCasaVazia(origemX,origemY);
                 // Remover peça do tabuleiro
                 if (this.Controls.Contains(tabuleiro[peca.linha, peca.coluna].pictureBox))
                 {
                     this.Controls.Remove(tabuleiro[peca.linha, peca.coluna].pictureBox);
                     this.Controls.Remove(tabuleiro[peca.linha, peca.coluna]);
+                    tabuleiro[peca.linha, peca.coluna] = novaCasaVazia;
+                    tabuleiro[peca.linha, peca.coluna].pictureBox = novaCasaVazia.pictureBox;
                 }
 
                 // Substitui a peça no tabuleiro
                 tabuleiro[peca.linha, peca.coluna] = pecaOrigem;
-                tabuleiro[origemX, origemY] = CriarCasaVazia(origemX, origemY);
+                tabuleiro[origemX, origemY] = novaCasaVazia;
+                this.Controls.Add(novaCasaVazia.pictureBox);
 
                 // Atualiza a posição visualmente
                 pecaOrigem.linha = peca.linha;
                 pecaOrigem.coluna = peca.coluna;
                 pecaOrigem.pictureBox.Location = new Point(pecaOrigem.coluna * 50, pecaOrigem.linha * 50); // Eu juro que daqui pra frente, eu nunca vou esquecer dessa desgraça, isso vai ser meu pesadelo de todas as noites ╰（‵□′）╯
                 pecaOrigem.pictureBox.BackColor = (pecaOrigem.linha + pecaOrigem.coluna) % 2 == 0 ? Color.White : Color.Black;
+
+                novaCasaVazia.pictureBox.BringToFront();
+                this.Controls.SetChildIndex(novaCasaVazia.pictureBox,0);
+                pecaOrigem.pictureBox.BringToFront();
+                this.Controls.SetChildIndex(pecaOrigem.pictureBox, 0);
+
+                MessageBox.Show($"{pecaOrigem.GetType()}");
             }
 
             // Atualiza a interface
@@ -196,6 +210,10 @@ public partial class Form1 : Form
     private CasaVazia CriarCasaVazia(int linha, int coluna)
     {
         CasaVazia casa = new CasaVazia("casavazia", linha, coluna);
+        casa.pictureBox.Location = new Point(coluna * 50, linha * 50);
+        casa.pictureBox.Size = new Size(50, 50);
+        casa.pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+        casa.pictureBox.BackColor = (linha + coluna) % 2 == 0 ? Color.White : Color.Black;
         casa.pictureBox.Visible = true;
         // Configura o clique para a nova casa vazia
         casa.pictureBox.Click += (sender, args) => { ClickNoTabuleiro(casa); };
