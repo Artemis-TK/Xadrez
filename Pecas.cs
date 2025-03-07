@@ -13,7 +13,7 @@ public abstract class Pecas : Form
 
     public PictureBox pictureBox = new PictureBox();
 
-    protected string disk { get; private set; } = "C";
+    protected string disk { get; private set; } = "D";
 
     public Pecas(string Cor, int Linha, int Coluna)
     {

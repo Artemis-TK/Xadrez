@@ -47,7 +47,6 @@ public class Peao : Pecas
             }
         }
 
-        MessageBox.Show($"Movimento inválido");
         return false;
     }
     public Peao(string Cor, int Linha, int Coluna) : base(Cor, Linha, Coluna)

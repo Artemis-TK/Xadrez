@@ -95,14 +95,20 @@ public partial class Form1 : Form
                 return;
             }
 
+            Pecas pecaRei = ((pecaOrigem.cor == "branco" || pecaOrigem.cor == "branca" ) && (pecaDestino is not CasaVazia || pecaDestino is CasaVazia)) ? tabuleiro[0,4] : tabuleiro[7,4];
+
             if (!pecaOrigem.MovimentoValido(peca.linha, peca.coluna, pecaDestino))
             {
+                MessageBox.Show("Movimento inválido");
                 vez_das_brancas = !vez_das_brancas;
                 pecaSelecionada = null;
                 origemX = -1;
                 origemY = -1;
                 return;
+
             }
+
+
 
             else if (pecaDestino is CasaVazia) // Se o destino estiver vazio, apenas move a peça
             {
@@ -147,6 +153,12 @@ public partial class Form1 : Form
                 pecaOrigem.pictureBox.BringToFront();
                 this.Controls.SetChildIndex(pecaOrigem.pictureBox, 0);
 
+                if(canXeque(pecaOrigem.MovimentoValido(pecaRei.linha,pecaRei.coluna,pecaRei) && ((pecaRei.linha+1 == ) && (pecaRei.coluna-1 == || pecaRei.coluna || pecaRei.coluna+1)) is not CasaVazia))
+                {
+                    MessageBox.Show("Xeque");
+                    
+                }
+
                 // _tabuleiro.InicializarTabuleiro(this);
             }
             else // Se houver outra peça, troca as posições
@@ -159,6 +171,7 @@ public partial class Form1 : Form
                     origemY = -1;
                     return;
                 }
+
                 if ((pecaOrigem.cor.StartsWith("b") && peca.cor.StartsWith("b")) || (pecaOrigem.cor.StartsWith("p") && peca.cor.StartsWith("p")))
                 {
                     MessageBox.Show("Movimento inválido");
@@ -217,5 +230,10 @@ public partial class Form1 : Form
         casa.pictureBox.Click += (sender, args) => { ClickNoTabuleiro(casa); };
 
         return casa;
+    }
+
+    public bool canXeque(bool arg)
+    {
+        return arg;
     }
 }
