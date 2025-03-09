@@ -10,7 +10,7 @@ public class Tabuleiro
 {
     public Pecas[,] Matriz { get; private set; }
 
-    public static Pecas[,] TabuleiroGlobal { get; private set; }
+    // public static Pecas[,] TabuleiroGlobal { get; private set; }
 
     private List<PictureBox> pb = new List<PictureBox>();
 
@@ -28,7 +28,7 @@ public class Tabuleiro
     public Tabuleiro()
     {
         Matriz = new Pecas[8, 8];
-        TabuleiroGlobal = Matriz;
+        // TabuleiroGlobal = Matriz;
 
         torres = new Torre[4];
         cavalos = new Cavalo[4];

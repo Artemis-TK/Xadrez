@@ -9,10 +9,33 @@ namespace Xadrez;
 public class Peao : Pecas
 {
     bool primeiroMovimento = true;
+    public Peao() : base() { }
+
+    public Peao(string Cor, int Linha, int Coluna) : base(Cor, Linha, Coluna)
+    {
+        pictureBox = new PictureBox
+        {
+            Location = new Point(coluna * 50, linha * 50),
+            Size = new Size(50, 50),
+            SizeMode = PictureBoxSizeMode.StretchImage,
+            Parent = this,
+        };
+
+        pictureBox.BackColor = (linha + coluna) % 2 == 0 ? Color.White : Color.Black;
+
+        try
+        {
+            string path = Path.Combine($"{Application.StartupPath}", "imagens", $"peao_{cor}.png"); // Se estiver dando erro, edite o valor da variável 'disk' para "D"
+            // MessageBox.Show("Tentando carregar: " + path);
+            pictureBox.Image = Image.FromFile(path);
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show("Erro ao carregar imagem: " + ex.Message);
+        }
+    }
     public override bool MovimentoValido(int LinhaDestino, int ColunaDestino, Pecas pecaDestino)
     {
-        // Define a direção do movimento:
-        // Peão branco avança para linhas maiores (+1) e preto para linhas menores (-1)
         if (LinhaDestino < 0 || LinhaDestino > 7 || ColunaDestino < 0 || ColunaDestino > 7)
             return false;
 
@@ -21,9 +44,10 @@ public class Peao : Pecas
         int difLinha = linha - LinhaDestino;
         int difColuna = coluna - ColunaDestino;
 
-        if (difColuna == 0 && (difLinha == direcao || difLinha == 2 * direcao) && pecaDestino is not CasaVazia){
-            MessageBox.Show($"Movimento inválido");
-            return false;
+        if (difColuna == 0 && (difLinha == direcao || (difLinha == 2 * direcao && primeiroMovimento)) && pecaDestino is CasaVazia)
+        {
+            primeiroMovimento = false;
+            return true;
         }
 
         if (difColuna == 0 && difLinha == direcao)
@@ -47,33 +71,20 @@ public class Peao : Pecas
             }
         }
 
-        MessageBox.Show($"Movimento inválido");
         return false;
     }
-    public Peao(string Cor, int Linha, int Coluna) : base(Cor, Linha, Coluna)
+
+    public override bool Xeque(Pecas rei, Pecas pecaAtacante, Pecas[,] tb)
     {
-        pictureBox = new PictureBox
-        {
-            Location = new Point(coluna * 50, linha * 50),
-            Size = new Size(48, 48),
-            SizeMode = PictureBoxSizeMode.StretchImage,
-            Parent = this,
-        };
 
-        pictureBox.BackColor = (linha + coluna) % 2 == 0 ? Color.White : Color.Black;
-
-        try
+        if (rei.cor != cor)
         {
-            string path = Path.Combine($@"{disk}:\Users\", Environment.UserName, "Xadrez", "bin", "Debug", "imagens", $"peao_{cor}.png"); // Se estiver dando erro, edite o valor da variável 'disk' para "D"
-            // MessageBox.Show("Tentando carregar: " + path);
-            pictureBox.Image = Image.FromFile(path);
+            if (pecaAtacante.MovimentoValido(rei.linha, rei.coluna, rei))
+            {
+                MessageBox.Show($"O rei está em Xeque");
+                return true;
+            }
         }
-        catch (Exception ex)
-        {
-            MessageBox.Show("Erro ao carregar imagem: " + ex.Message);
-        }
-
+        return false;
     }
-    public Peao() : base() { }
-
 }
